@@ -1,7 +1,9 @@
 $(function() {
 
 	// Make sure the footer will not disappear on click
-	$( "#origami" ).click( false );
+	$( "#origami" ).bind( "tap", function() {
+		return false;
+	});
 
 	var // Determine proper gesture events
 		supportTouch = $.support.touch,
