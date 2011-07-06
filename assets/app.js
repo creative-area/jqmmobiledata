@@ -1,96 +1,126 @@
 $(function() {
 
-	// Make sure the footer will not disapear on click
-	//$( "#origami" ).click( false );
-	$( "#origami" ).bind( "tap", function() {
-		return false;
-	});
+	// Make sure the footer will not disappear on click
+	$( "#origami" ).click( false );
 
-	var // Format or origamiCount cells
+	var // Determine proper gesture events
+		supportTouch = $.support.touch,
+		touchStart = supportTouch ? "touchstart" : "mousedown",
+		touchEnd = supportTouch ? "touchend" : "mouseup",
+		// Format of origamiCount cells
 		format = {
 			number: function( value ) {
-				return value || "-";
+				return value;
 			},
 			hour: function( value ) {
-				return value ? ( value + "h" ) : "-";
+				return value + "h";
 			},
 			halfHour: function( value ) {
-				if ( !value ) {
-					return "-";
-				}
 				var hour = Math.floor( value ),
 					minute = value - hour;
 				return hour + "h" + ( minute ? "30" : "00" );
 			}
 		},
-		// Units used in origami-bandwidth data
+		// Units used in bandwidth data
 		units = {
 			K: 1,
 			M: 1000
 		},
-		// regexp to parse origami-bandwidth data
+		// Regular expression to parse bandwidth data
 		r_bandwidth = /^([0-9]+)(K|M)$/,
-		// Get the origamiCount cells
-		data = $( ".origami-count" ).each(function() {
-			var elem = $( this ),
-				bandwidth = elem.attr( "data-origami-bandwidth" ),
-				tmp = r_bandwidth.exec( bandwidth );
-			// toggle from bandwidth expression to actual value
-			elem.attr( "data-origami-bandwidth", tmp[ 1 ] * units[ tmp[ 2 ] ] );
-			// bind plus and minus actions
-			elem.siblings( ".origami-plus" ).bind( "tap", updateValue( elem, +1 ) );
-			elem.siblings( ".origami-minus" ).bind( "tap", updateValue( elem, -1 ) );
-		}),
 		// Get the result span
-		result = $( "#origami-result" );
-
-	// utility function that returns a click (mousedown) handler
-	function updateValue( elem, direction ) {
-		console.log("touchstart");
-		var timer,
-			lastTimeout;
-		return function simulate() {
-			var self = this,
-				// Get current value
-				current = 1 * ( elem.attr( "data-origami-value" ) || 0 ),
-				// ... and increment
-				increment = elem.attr( "data-origami-increment" );
-			// Apply the change
-			current += direction * increment;
-			// If we're still in bounds
-			if ( current >= 0 && current <= elem.attr( "data-origami-max" ) ) {
-				// Install mouseup control & timer for fast up & down
-				if ( !timer ) {
-					lastTimeout = 1000;
-					$( self ).one( "mouseup mouseout touchend", function() {
-						clearTimeout( timer );
-						timer = lastTimeout = undefined;
-					});
-				}
-				lastTimeout /= 2;
-				if ( lastTimeout < 80 ) {
-					lastTimeout = 80;
-				}
-				timer = setTimeout(function() {
-					simulate.call( self );
-				}, lastTimeout );
-				// Update value & display
-				elem.attr( "data-origami-value", current );
-				elem.text( format[ elem.attr( "data-origami-format" ) ]( current ) );
-				// Update global count
-				updateCount();
-			}
-		};
-	}
+		result = $( "#origami-result" ),
+		values = [];
 
 	// Function to update the global count
-	function updateCount() {
-		var cumul = 0;
-		data.each(function() {
-			var elem = $( this );
-			cumul += ( elem.attr( "data-origami-value" ) || 0 ) * elem.attr( "data-origami-bandwidth" );
-		});
-		cumul = !cumul ? 0 : ( cumul < 1000 ? "< 1" : Math.ceil( cumul / 1000 ) );
+	function updateTotal() {
+		var cumul = 0,
+			i = 0,
+			length = values.length;
+		// We re-compute every time rather than maintain a global variable
+		// to account for eventual rounding errors when adding/subtracting
+		// multiple times to the same variable in JavaScript
+		for( ; i < length; i++ ) {
+			cumul += values[ i ];
+		}
+		if ( cumul ) {
+			cumul = cumul < 1000 ? "< 1" : Math.ceil( cumul / 1000 );
+		}
 		result.text( cumul + " Mo par mois" );
 	}
+
+	// Bind the buttons actions
+	$( ".origami-count" ).each(function( index ) {
+		var // Get the element
+			elem = $( this ),
+			data = elem.data(),
+			// Starting value (and corresponding value in global array)
+			value = values[ index ] = 0,
+			// Get increment step
+			increment = 1 * data.origamiIncrement,
+			// Get maximum value
+			max = 1 * data.origamiMax,
+			// Get bandwidth contribution (see lower for final value)
+			bandwidth = r_bandwidth.exec( data.origamiBandwidth ),
+			// Get formatting function
+			formatFN = format[ data.origamiFormat ],
+			// Get plus button
+			plusButton = elem.siblings( ".origami-plus" ),
+			// Get minus button
+			minusButton = elem.siblings( ".origami-minus" ),
+			// Timer variables (hold behavior)
+			timer,
+			timeout;
+		// Compute final bandwidth contribution value
+		bandwidth = bandwidth[ 1 ] * units[ bandwidth[ 2 ] ];
+		// Returns an handler for button click given the direction (+1/-1)
+		function dirUpdate( direction ) {
+			return function update() {
+				var // Test change
+					current = value + direction * increment;
+				// If we can change the value
+				if ( current >= 0 && current <= max ) {
+					// Update local and global value;
+					values[ index ] = (( value = current )) * bandwidth;
+					// Update local display
+					elem.text( current ? formatFN( current ) : "-" );
+					// Update total display
+					updateTotal();
+					// Hold timer
+					if ( timer ) {
+						timeout /= 2;
+						if ( timeout < 80 ) {
+							timeout = 80;
+						}
+					} else {
+						timeout = 1000;
+					}
+					timer = setTimeout( update, timeout );
+				// If we can't change the value, stop anything related to holding
+				} else {
+					end();
+				}
+				// Make sure we don't start selecting text
+				// (very annoying otherwise)
+				return false;
+			};
+		}
+		// Handler to clear all holding timers when touch action ends
+		function end() {
+			if ( timer ) {
+				clearTimeout( timer );
+				timer = timeout = undefined;
+			}
+		}
+		// Bind update handler to buttons given direction
+		plusButton.bind( touchStart, dirUpdate( +1 ) );
+		minusButton.bind( touchStart, dirUpdate( -1 ) );
+		// Bind end of touch action handler for both buttons
+		// and also make sure getting out of the button while
+		// holding touch properly cancels everything
+		// (same for cancel)
+		plusButton.add( minusButton ).bind( touchEnd, end ).bind( "vmouseout vmousecancel", function() {
+			$( this ).trigger( touchEnd );
+		});
+	});
 });
