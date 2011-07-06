@@ -1,0 +1,39 @@
+#origami .ui-li-aside {
+	width: 150px;
+}
+#origami .ui-li-heading {
+	font-size: 12px;
+	letter-spacing: 0px;
+}
+#origami .ui-li-desc {
+	font-size: 10px;
+	margin-left: -27px;
+}
+#origami .ui-li-static {
+	padding-left: 35px;
+	padding-right: 7px;
+}
+#origami .ui-li-icon {
+	max-height: 27px;
+	max-width: 27px;
+	left: 7px;
+}
+#origami .ui-footer p {
+	font-size: 12px;
+	text-align: center;
+}
+#origami .ui-btn-inner {
+	padding-right: 0;
+}
+.origami-count {
+	text-align: center;
+	display: inline-block;
+	width: 50px;
+	padding: 8px 2px;
+	color: orange;
+	position: relative;
+}
+.origami-highlight {
+	font-weight: bold;
+	font-size: 20px;
+}
