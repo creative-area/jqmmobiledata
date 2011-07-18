@@ -1,5 +1,5 @@
 #origami .ui-li-aside {
-	width: 150px;
+	width: 80px;
 }
 #origami .ui-li-heading {
 	font-size: 12px;
@@ -25,15 +25,16 @@
 #origami .ui-btn-inner {
 	padding-right: 0;
 }
-.origami-count {
-	text-align: center;
-	display: inline-block;
-	width: 50px;
-	padding: 8px 2px;
+#origami input.origami-count {
+	position: absolute;
+	top: 11px;
+	right: 87px;
 	color: orange;
-	position: relative;
+	width: 40px;
+	text-align: center;
+	font-weight: bold;
 }
-.origami-highlight {
+#origami .origami-highlight {
 	font-weight: bold;
 	font-size: 20px;
 }

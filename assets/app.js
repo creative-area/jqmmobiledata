@@ -1,9 +1,7 @@
 $(function() {
 
 	// Make sure the footer will not disappear on click
-	$( "#origami" ).bind( "tap", function() {
-		return false;
-	});
+	$( "#origami" ).bind( "tap", false );
 
 	var // Determine proper gesture events
 		supportTouch = $.support.touch,
@@ -17,10 +15,29 @@ $(function() {
 			hour: function( value ) {
 				return value + "h";
 			},
-			halfHour: function( value ) {
+			hourMinute: function( value ) {
 				var hour = Math.floor( value ),
-					minute = value - hour;
-				return hour + "h" + ( minute ? "30" : "00" );
+					minute = Math.floor( 60 * ( value - hour ) );
+				if ( minute < 10 ) {
+					minute = "0" + minute;
+				}
+				return hour + "h" + minute;
+			}
+		},
+		// Mask handling
+		mask = {
+			number: function( setValue ) {
+				return function( event ) {
+					setValue( parseFloat( $.trim( this.value ) ), event.type === "blur" );
+				};
+			},
+			hourMinute: function( setValue ) {
+				return function( event ) {
+					var val = this.value.split( "h" ),
+						hour = parseFloat( $.trim( val[ 0 ] ) ),
+						minute = val[ 1 ] ? parseFloat( $.trim( val[ 1 ] ) ) : 0;
+					setValue( hour + ( minute / 60 ), event.type === "blur" );
+				};
 			}
 		},
 		// Units used in bandwidth data
@@ -33,6 +50,9 @@ $(function() {
 		// Get the result span
 		result = $( "#origami-result" ),
 		values = [];
+
+	// Make hour the same as halfHour for masks
+	mask.hour = mask.hourMinute;
 
 	// Function to update the global count
 	function updateTotal() {
@@ -66,28 +86,54 @@ $(function() {
 			bandwidth = r_bandwidth.exec( data.origamiBandwidth ),
 			// Get formatting function
 			formatFN = format[ data.origamiFormat ],
+			// Get masking function
+			maskFN = mask[ data.origamiFormat ]( setValue ),
+			// Get control panel
+			controlPanel = elem.siblings( ".origami-control-panel" ),
 			// Get plus button
-			plusButton = elem.siblings( ".origami-plus" ),
+			plusButton = $( ".origami-plus", controlPanel ),
 			// Get minus button
-			minusButton = elem.siblings( ".origami-minus" ),
+			minusButton = $( ".origami-minus", controlPanel ),
 			// Timer variables (hold behavior)
 			timer,
 			timeout;
+		// Mask input
+		elem.bind( "keyup blur", maskFN );
 		// Compute final bandwidth contribution value
 		bandwidth = bandwidth[ 1 ] * units[ bandwidth[ 2 ] ];
+		// Set value
+		function setValue( current, dynamic ) {
+			var ok;
+			if( isNaN( current ) ) {
+				current = value;
+			} else {
+				if ( current / increment > Math.floor( current / increment ) ) {
+					current = ( Math.floor( current / increment ) + 1 ) * increment;
+				}
+				ok = current >= 0 && current <= max;
+			}
+			if ( dynamic !== undefined || ok ) {
+				if ( current < 0 ) {
+					current = 0;
+				} else if ( current > max ) {
+					current = max;
+				}
+				// Update local and global value;
+				values[ index ] = (( value = current )) * bandwidth;
+				if ( dynamic !== false ) {
+					// Update local display
+					elem.val( current ? formatFN( current ) : "-" );
+				}
+				// Update total display
+				updateTotal();
+			}
+			// Say if there was a change
+			return ok;
+		}
 		// Returns an handler for button click given the direction (+1/-1)
 		function dirUpdate( direction ) {
 			return function update() {
-				var // Test change
-					current = value + direction * increment;
-				// If we can change the value
-				if ( current >= 0 && current <= max ) {
-					// Update local and global value;
-					values[ index ] = (( value = current )) * bandwidth;
-					// Update local display
-					elem.text( current ? formatFN( current ) : "-" );
-					// Update total display
-					updateTotal();
+				if ( setValue( value + direction * increment ) ) {
 					// Hold timer
 					if ( timer ) {
 						timeout /= 2;
@@ -98,12 +144,9 @@ $(function() {
 						timeout = 1000;
 					}
 					timer = setTimeout( update, timeout );
-				// If we can't change the value, stop anything related to holding
 				} else {
 					end();
 				}
-				// Make sure we don't start selecting text
-				// (very annoying otherwise)
 				return false;
 			};
 		}
