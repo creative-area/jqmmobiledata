@@ -66,9 +66,15 @@ $(function() {
 			cumul += values[ i ];
 		}
 		if ( cumul ) {
-			cumul = cumul < 1000 ? "< 1" : Math.ceil( cumul / 1000 );
+			if ( cumul < 1000 ) {
+				cumul = "< 1 Mo";
+			} else if ( cumul >= 1000000 ) {
+				cumul = ( cumul / 1000000 ).toFixed( 2 ) + " Go";
+			} else {
+				cumul = Math.ceil( cumul / 1000 ) + " Mo";
+			}
 		}
-		result.text( cumul + " Mo par mois" );
+		result.text( cumul + " par mois" );
 	}
 
 	// Bind the buttons actions
@@ -99,6 +105,12 @@ $(function() {
 			timeout;
 		// Mask input
 		elem.bind( "keyup blur", maskFN );
+		// Empty field on focus if value is "-"
+		elem.bind( "focus", function() {
+			if ($(this).val() === "-") {
+				$(this).val("");
+			}
+		} );
 		// Compute final bandwidth contribution value
 		bandwidth = bandwidth[ 1 ] * units[ bandwidth[ 2 ] ];
 		// Set value
