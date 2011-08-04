@@ -49,7 +49,9 @@ $(function() {
 		r_bandwidth = /^([0-9]+)(K|M)$/,
 		// Get the result span
 		result = $( "#origami-result" ),
-		values = [];
+		values = [],
+		// Flag to know if we got passed the 2GO limit
+		over2GO;
 
 	// Make hour the same as halfHour for masks
 	mask.hour = mask.hourMinute;
@@ -64,6 +66,10 @@ $(function() {
 		// multiple times to the same variable in JavaScript
 		for( ; i < length; i++ ) {
 			cumul += values[ i ];
+		}
+		over2GO = ( cumul >= 2000000 );
+		if ( over2GO ) {
+			cumul = 2000000;
 		}
 		if ( cumul ) {
 			if ( cumul < 1000 ) {
@@ -130,11 +136,12 @@ $(function() {
 				} else if ( current > max ) {
 					current = max;
 				}
-				// Update local and global value;
-				values[ index ] = (( value = current )) * bandwidth;
+				if ( !over2GO || current <= value ) {
+					values[ index ] = (( value = current )) * bandwidth;
+				}
 				if ( dynamic !== false ) {
 					// Update local display
-					elem.val( current ? formatFN( current ) : "-" );
+					elem.val( value ? formatFN( value ) : "-" );
 				}
 				// Update total display
 				updateTotal();
