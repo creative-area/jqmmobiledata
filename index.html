@@ -3,7 +3,7 @@
 <head> 
 	<meta charset="utf-8"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
-	<title>Origami Star</title> 
+	<title>Consommation data mobile</title> 
 	<link rel="stylesheet"  href="http://code.jquery.com/mobile/1.0b3/jquery.mobile-1.0b3.min.css" />
 	<link rel="stylesheet"  href="assets/app.css" />
 	<script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
@@ -11,129 +11,126 @@
 	<script src="assets/app.min.js"></script>
 </head> 
 <body>
-	<div id="origami" data-role="page" data-theme="a">
+	<div id="app" data-role="page" data-theme="a">
 
-		<div id="origami-header"  data-role="header">
-			<h1>Origami Star</h1>
-		</div> 
-		<div id="origami-content" data-role="content">
+		<div id="app-content" data-role="content">
 			<ul data-role="listview">
 				<li>
 					<img src="images/picto_internet.png" alt="Internet" class="ui-li-icon">
 					<h3>Surf sur Internet<br>Application utilisées</h3>
 					<p>en moyenne : une heure = 12 Mo</p>
-					<input class="origami-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c"
+					<input class="app-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c"
 						value = "-" 
-						data-origami-format="hour"
-						data-origami-bandwidth="12M"
-						data-origami-max="50"
-						data-origami-increment="1"
+						data-app-format="hour"
+						data-app-bandwidth="12M"
+						data-app-max="50"
+						data-app-increment="1"
 					>
-					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside origami-control-panel"> 
-						<span class="origami-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
-						<span class="origami-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
+					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside app-control-panel"> 
+						<span class="app-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
+						<span class="app-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
 					</div>
 				</li>
 				<li>
 					<img src="images/picto_email.png" alt="Email sans pièce jointe" class="ui-li-icon">
 					<h3>E-mails sans <br>pièce jointe</h3>
 					<p>en moyenne : 1 email = 10 Ko</p>
-					<input class="origami-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c"
+					<input class="app-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c"
 						value = "-" 
-						data-origami-format="number"
-						data-origami-bandwidth="10K"
-						data-origami-max="2000"
-						data-origami-increment="5"
+						data-app-format="number"
+						data-app-bandwidth="10K"
+						data-app-max="2000"
+						data-app-increment="5"
 					>
-					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside origami-control-panel">
-						<span class="origami-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
-						<span class="origami-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
+					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside app-control-panel">
+						<span class="app-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
+						<span class="app-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
 					</div>
 				</li>
 				<li>
 					<img src="images/picto_email_pj.png" alt="Email avec pièce jointe" class="ui-li-icon">
 					<h3>E-mails avec <br>pièce jointe</h3>
 					<p>en moyenne : 1 email = 500 Ko</p>
-					<input class="origami-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c"
+					<input class="app-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c"
 						value = "-" 
-						data-origami-format="number"
-						data-origami-bandwidth="500K"
-						data-origami-max="100"
-						data-origami-increment="1"
+						data-app-format="number"
+						data-app-bandwidth="500K"
+						data-app-max="100"
+						data-app-increment="1"
 					>
-					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside origami-control-panel">
-						<span class="origami-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
-						<span class="origami-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
+					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside app-control-panel">
+						<span class="app-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
+						<span class="app-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
 					</div>
 				</li>
 				<li>
 					<img src="images/picto_video_tv.png" alt="Vidéos, TV" class="ui-li-icon service-picto">
-					<h3>Vidéos, TV d'Orange,<br>Ligue 1, ...</h3>
+					<h3>Vidéos, <br>TV, …</h3>
 					<p>en moyenne : une heure = 110 Mo</p>
-					<input class="origami-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c"
+					<input class="app-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c"
 						value = "-" 
-						data-origami-format="hourMinute"
-						data-origami-bandwidth="110M"
-						data-origami-max="10"
-						data-origami-increment="0.5"
+						data-app-format="hourMinute"
+						data-app-bandwidth="110M"
+						data-app-max="10"
+						data-app-increment="0.5"
 					>
-					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside origami-control-panel"> 
-						<span class="origami-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
-						<span class="origami-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
+					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside app-control-panel"> 
+						<span class="app-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
+						<span class="app-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
 					</div>
 				</li>
 				<li>
 					<img src="images/picto_applications.png" alt="Applications téléchargées" class="ui-li-icon">
 					<h3>Applications<br>téléchargées</h3>
 					<p>en moyenne : 1 jeu = 1 Mo</p>
-					<input class="origami-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c"
+					<input class="app-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c"
 						value = "-" 
-						data-origami-format="number"
-						data-origami-bandwidth="1M"
-						data-origami-max="50"
-						data-origami-increment="1"
+						data-app-format="number"
+						data-app-bandwidth="1M"
+						data-app-max="50"
+						data-app-increment="1"
 					>
-					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside origami-control-panel"> 
-						<span class="origami-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
-						<span class="origami-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
+					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside app-control-panel"> 
+						<span class="app-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
+						<span class="app-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
 					</div>
 				</li>
 				<li>
 					<img src="images/picto_mp3.png" alt="Mp3" class="ui-li-icon">
 					<h3>Mp3<br>téléchargés</h3>
 					<p>en moyenne : 1 Mp3 = 5 Mo</p>
-					<input class="origami-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c"
+					<input class="app-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c"
 						value = "-" 
-						data-origami-format="number"
-						data-origami-bandwidth="5M"
-						data-origami-max="50"
-						data-origami-increment="1"
+						data-app-format="number"
+						data-app-bandwidth="5M"
+						data-app-max="50"
+						data-app-increment="1"
 					>
-					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside origami-control-panel"> 
-						<span class="origami-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
-						<span class="origami-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
+					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside app-control-panel"> 
+						<span class="app-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
+						<span class="app-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
 					</div>
 				</li>
 				<li>
 					<img src="images/picto_sonnerie.png" alt="Sonnerie" class="ui-li-icon">
 					<h3>Sonnerie / logos<br>téléchargés</h3>
 					<p>en moyenne : 1 logo = 300 Ko</p>
-					<input class="origami-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c" 
+					<input class="app-count ui-input-text ui-corner-all ui-shadow-inset ui-body-c" 
 						value = "-" 
-						data-origami-format="number"
-						data-origami-bandwidth="300K"
-						data-origami-max="50"
-						data-origami-increment="1"
+						data-app-format="number"
+						data-app-bandwidth="300K"
+						data-app-max="50"
+						data-app-increment="1"
 					>
-					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside origami-control-panel"> 
-						<span class="origami-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
-						<span class="origami-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
+					<div data-role="controlgroup" data-type="horizontal" class="ui-li-aside app-control-panel"> 
+						<span class="app-minus" data-role="button" data-icon="minus" data-inline="true">&nbsp;</span>
+						<span class="app-plus" data-role="button" data-icon="plus" data-inline="true">&nbsp;</span>
 					</div>
 				</li>
 			</ul>
 		</div> 
-		<div id="origami-footer" data-role="footer" data-position="fixed">
-			<p>Consommation estimée : <span id="origami-result" class="origami-highlight">0 Mo par mois</span></p>
+		<div id="app-footer" data-role="footer" data-position="fixed">
+			<p>Consommation estimée : <span id="app-result" class="app-highlight">0 Mo par mois</span></p>
 		</div>
 
 	</div>

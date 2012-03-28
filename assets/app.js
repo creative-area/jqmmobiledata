@@ -1,13 +1,13 @@
 $(function() {
 
 	// Make sure the footer will not disappear on click
-	$( "#origami" ).bind( "tap", false );
+	$( "#app" ).bind( "tap", false );
 
 	var // Determine proper gesture events
 		supportTouch = $.support.touch,
 		touchStart = supportTouch ? "touchstart" : "mousedown",
 		touchEnd = supportTouch ? "touchend" : "mouseup",
-		// Format of origamiCount cells
+		// Format of appCount cells
 		format = {
 			number: function( value ) {
 				return value;
@@ -48,7 +48,7 @@ $(function() {
 		// Regular expression to parse bandwidth data
 		r_bandwidth = /^([0-9]+)(K|M)$/,
 		// Get the result span
-		result = $( "#origami-result" ),
+		result = $( "#app-result" ),
 		values = [],
 		// Flag to know if we got passed the 2GO limit
 		over2GO;
@@ -84,28 +84,28 @@ $(function() {
 	}
 
 	// Bind the buttons actions
-	$( ".origami-count" ).each(function( index ) {
+	$( ".app-count" ).each(function( index ) {
 		var // Get the element
 			elem = $( this ),
 			data = elem.data(),
 			// Starting value (and corresponding value in global array)
 			value = values[ index ] = 0,
 			// Get increment step
-			increment = 1 * data.origamiIncrement,
+			increment = 1 * data.appIncrement,
 			// Get maximum value
-			max = 1 * data.origamiMax,
+			max = 1 * data.appMax,
 			// Get bandwidth contribution (see lower for final value)
-			bandwidth = r_bandwidth.exec( data.origamiBandwidth ),
+			bandwidth = r_bandwidth.exec( data.appBandwidth ),
 			// Get formatting function
-			formatFN = format[ data.origamiFormat ],
+			formatFN = format[ data.appFormat ],
 			// Get masking function
-			maskFN = mask[ data.origamiFormat ]( setValue ),
+			maskFN = mask[ data.appFormat ]( setValue ),
 			// Get control panel
-			controlPanel = elem.siblings( ".origami-control-panel" ),
+			controlPanel = elem.siblings( ".app-control-panel" ),
 			// Get plus button
-			plusButton = $( ".origami-plus", controlPanel ),
+			plusButton = $( ".app-plus", controlPanel ),
 			// Get minus button
-			minusButton = $( ".origami-minus", controlPanel ),
+			minusButton = $( ".app-minus", controlPanel ),
 			// Timer variables (hold behavior)
 			timer,
 			timeout;

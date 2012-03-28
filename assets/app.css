@@ -1,31 +1,31 @@
-#origami .ui-li-aside {
+#app .ui-li-aside {
 	width: 80px;
 }
-#origami .ui-li-heading {
+#app .ui-li-heading {
 	font-size: 12px;
 	letter-spacing: 0px;
 }
-#origami .ui-li-desc {
+#app .ui-li-desc {
 	font-size: 10px;
 	margin-left: -27px;
 }
-#origami .ui-li-static {
+#app .ui-li-static {
 	padding-left: 35px;
 	padding-right: 7px;
 }
-#origami .ui-li-icon {
+#app .ui-li-icon {
 	max-height: 27px;
 	max-width: 27px;
 	left: 7px;
 }
-#origami .ui-footer p {
+#app .ui-footer p {
 	font-size: 12px;
 	text-align: center;
 }
-#origami .ui-btn-inner {
+#app .ui-btn-inner {
 	padding-right: 0;
 }
-#origami input.origami-count {
+#app input.app-count {
 	position: absolute;
 	top: 11px;
 	right: 87px;
@@ -34,7 +34,7 @@
 	text-align: center;
 	font-weight: bold;
 }
-#origami .origami-highlight {
+#app .app-highlight {
 	font-weight: bold;
 	font-size: 20px;
 }
